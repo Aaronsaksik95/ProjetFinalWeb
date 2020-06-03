@@ -2,20 +2,19 @@
 // localStorage.removeItem('YourItem')
 <template>
   <div class="login-content" id="login">
-    <div id="link-sign">
-      <router-link class="link" to="/signup">Inscription</router-link>
-      <router-link class="link" to="/login">Connexion</router-link>
-    </div>
+    saksik95@gmail.com
     <form class="login-form" @submit="formSubmit">
       <label for>Adresse Email</label>
       <input type="email" v-model="email" placeholder="exemple@gmail.com" />
       <label for>Mot de passe</label>
       <input type="Password" v-model="password" placeholder="*********" />
       <label for></label>
-      <button type="submit">Se connecter</button>
-    </form>saksik95@gmail.com
-    <p>{{user.id}}</p>
-    <!-- <strong>Output:</strong> -->
+      <div class="d-flex">
+        <button type="submit" class="btn btn-info h-25">Connexion</button>
+        <router-link class="link p-2" to="/signup">Inscription</router-link>
+      </div>
+    </form>
+    <p class="text-info">{{info}}</p>
   </div>
 </template>
 
@@ -29,6 +28,7 @@ export default {
       email: "",
       password: "",
       token: "",
+      info:"",
       user: [],
       getToken: localStorage.getItem("token")
     };
@@ -47,14 +47,16 @@ export default {
     async formSubmit(e) {
       localStorage.removeItem('token')
       e.preventDefault();
-      let currentObj = this;
+      let currentObj = this;      
       await this.axios
         .post("http://localhost:5000/login/", {
           email: this.email,
           password: this.password
         })
         .then(function(response) {
-          currentObj.token = response.data.token;
+          currentObj.token = response.data[0].token,
+          currentObj.info = response.data[1].info,
+          console.log(currentObj)
         })
         .catch(function(error) {
           currentObj.token = error;

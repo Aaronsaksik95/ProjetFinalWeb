@@ -1,6 +1,7 @@
 var express = require('express');
 var morgan = require('morgan');
 var userModel = require('./models').User;
+var panierModel = require('./models').Panier
 var passport = require('passport');
 var bcrypt = require('bcrypt')
 var bodyParser = require('body-parser');
@@ -50,31 +51,44 @@ app.post('/signup', async function (req, res) {
     }
 })
 app.post('/login', async (req, res, next) => {
-    passport.authenticate('login', async (err, user, info) => {     try {
-        if(err || !user){
-          return res.status(400).json({
-            message: 'Something is not right',
-            user   : user
-        });
+    passport.authenticate('login', async (err, user, info) => {
+        try {
+            if (err || !user) {
+                return res.status(400).json({
+                    message: 'Something is not right',
+                    user: user
+                });
+            }
+            req.login(user, { session: false }, async (error) => {
+                if (error) return next(error)
+                const body = { id: user.id, RoleId: user.RoleId };
+                const token = jwt.sign({ user: body }, 'top_secret');
+                const info = "Vous êtes bien connecté."
+                return res.json([{ token }, {info}]);
+            });
+        } catch (error) {
+            return next(error);
         }
-        req.login(user, { session : false }, async (error) => {
-          if( error ) return next(error)
-          const body = { id : user.id, RoleId : user.RoleId };
-          const token = jwt.sign({ user : body },'top_secret');
-          return res.json({ token });
-        });     } catch (error) {
-        return next(error);
-      }
     })(req, res, next);
-  });
- 
+});
+
+app.delete('/panier/:ProduitId', function (req, res) {
+    panierModel.destroy({
+        where: {
+            ProduitId: req.params.ProduitId
+        }
+    })
+    console.log('coucoucoucoucoucou')
+    res.json('Votre article a bien été supprimé du panier.');
+})
+
 // app.use('/api', auth)
 app.use('/user', user)
-app.use('/profile', passport.authenticate('jwt', { session : false }), secureRoute );
+app.use('/profile', passport.authenticate('jwt', { session: false }), secureRoute);
 app.use('/produit', produit)
 app.use('/panier', panier)
 app.use('/produit', commentaire)
-app.use('/produit',  note)
+app.use('/produit', note)
 // passport.authenticate('local', { session: false }),
 
 db.sequelize.sync().then(() => {

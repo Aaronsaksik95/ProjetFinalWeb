@@ -1,23 +1,32 @@
 <template>
-  <div>
-    <table class="table table-striped table-dark">
-      <thead>
+  <div class="m-5">
+    <router-link class="float-left mb-3 ml-3" to="/addProduit">Ajouter un jeu</router-link>
+    <router-link class="float-left mb-3 ml-3" to="/users">Liste des users</router-link>
+    <table class="table table-striped">
+      <thead class="thead-dark">
         <tr>
           <th scope="col">Id</th>
           <th scope="col">Name</th>
           <th scope="col">Image</th>
           <th scope="col">Description</th>
           <th scope="col">Price</th>
-          <th scope="col"><Button>Supprimer</Button></th>
-          <th scope="col"><Button>Modifier</Button></th>
+          <th scope="col">Suppimer</th>
+          <th scope="col">Modifier</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
+        <tr v-for="post in posts" :key="post.id">
+          <th scope="row">{{post.id}}</th>
+          <td>{{post.name}}</td>
+          <td>{{post.image}}</td>
+          <td>{{post.description}}</td>
+          <td>{{post.price}}</td>
+          <td>
+            <Button v-on:click="DeleteProd(post.id)" class="btn btn-danger">Supprimer</Button>
+          </td>
+          <td>
+            <router-link class="btn btn-warning" :to="{path: '/updateProduit/'+ post.id}">Modifier</router-link>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -40,11 +49,16 @@ export default {
     axios
       .get("http://localhost:5000/produit/")
       .then(response => (this.posts = response.data));
-    console.log("posts", this.posts);
     axios
       .get("http://localhost:5000/profile?secret_token=" + this.getToken)
       .then(response => (this.user = response.data.user));
   },
-  methods: {}
+  methods: {
+    DeleteProd(id) {
+      axios.delete("http://localhost:5000/produit/" + id);
+      console.log("salut");
+      document.location.reload(true);
+    }
+  }
 };
 </script>

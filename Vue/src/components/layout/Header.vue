@@ -14,21 +14,23 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="/login">
-              Connexion
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/signup">Inscription</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/profile">Profil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="/panier" tabindex="-1" aria-disabled="true">Panier</a>
+        <ul class="navbar-nav w-100">
+          <div class="collapse navbar-collapse">
+            <li class="nav-item active">
+              <router-link class="nav-link" to="/login">Connexion</router-link>
+            </li>
+            <li class="nav-item active">
+              <router-link class="nav-link" to="/signup">Inscription</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{path: '/profile/'+ user.id}">Profil</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/produitAdmin">Admin</router-link>
+            </li>
+          </div>
+          <li class="nav-item float-right">
+            <router-link class="nav-link" to="/panier">Panier</router-link>
           </li>
         </ul>
       </div>
@@ -37,5 +39,18 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data: function() {
+    return {
+      user: [],
+      getToken: localStorage.getItem("token")
+    };
+  },
+  mounted() {
+    axios
+      .get("http://localhost:5000/profile?secret_token=" + this.getToken)
+      .then(response => (this.user = response.data.user));
+  }
+};
 </script>

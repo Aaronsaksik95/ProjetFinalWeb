@@ -1,9 +1,5 @@
 <template>
   <div class="signup-content" id="signup">
-    <div id="link-sign">
-      <router-link class="link" to="/signup">Inscription</router-link> 
-      <router-link class="link" to="/login">Connexion</router-link> 
-    </div>
     <form class="signup-form" @submit="formSubmit">
       <label for>FirstName</label>
       <input type="text" v-model="firstName" placeholder="Aaron" />
@@ -18,10 +14,12 @@
       <label for>Mot de passe</label>
       <input type="Password" v-model="password" placeholder="*********" />
       <label for></label>
-      <button type="submit">S'inscrire</button>
+      <div class="d-flex">
+        <button type="submit" class="btn btn-info h-25">Inscription</button>
+        <router-link class="link p-2" to="/login">Connexion</router-link>
+      </div>
     </form>
-    <!-- <strong>Output:</strong> -->
-    <pre>{{output}}</pre>
+    <p class="text-primary">{{output}}</p>
   </div>
 </template>
 
@@ -66,7 +64,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.link{
+.link {
   padding: 40px;
 }
 .signup-form {

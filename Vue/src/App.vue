@@ -3,8 +3,7 @@
     <div id="nav">
       <Header />
     </div>
-
-    <router-view />
+    <Home/>
     <Footer />
   </div>
 </template>
@@ -13,11 +12,14 @@
 // @ is an alias to /src
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+import Home from "./views/Home";
+
 
 export default {
   name: "App",
   components: {
     Header,
+    Home,
     Footer
   }
 };

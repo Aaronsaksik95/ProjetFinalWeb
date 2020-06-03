@@ -6,7 +6,6 @@ var passport = require('passport');
 router.get('/', function(req, res){
     produit.findAll()
         .then(produit => {
-            console.log(produit)
             res.status(200).json(produit)
         })
         .catch(err => {
@@ -15,7 +14,7 @@ router.get('/', function(req, res){
 })
 
 router.get('/:id', async function (req, res) {
-    const oneProduit = await produit.findOne({ where: { id: req.param('id') } })
+    const oneProduit = await produit.findOne({ where: { id: req.params.id } })
         .then(oneProduit => {
             res.status(200).json(oneProduit)
         })
@@ -35,16 +34,16 @@ router.post('/', async function (req, res) {
                 price: req.body.price,
                 image: req.body.image
             })
-            res.json('Votre article a bien été ajouté.');
+            return res.json('Votre article a bien été ajouté.');
         }
         else {
-            res.json('Votre article existe deja.');
+            return res.json('Votre article existe deja.');
         }
     }
 })
 
 router.put('/:id', async function (req, res) {
-    const sameProduit = await produit.findOne({ where: { name: req.body.name, id: { $not: req.param('id') } } });
+    const sameProduit = await produit.findOne({ where: { name: req.body.name, id: { $not: req.params.id } } });
     if (req.body.name, req.body.description, req.body.price, req.body.image) {
         if (sameProduit === null) {
             produit.update({
@@ -54,15 +53,16 @@ router.put('/:id', async function (req, res) {
                 image: req.body.image
             }, {
                 where: {
-                    id: req.param('id')
+                    id: req.params.id
                 }
             })
-            res.json('Votre article a bien été modifié.');
+            return res.json('Votre article a bien été modifié.');
         }
         else {
-            res.json('Votre article existe deja.');
+            return res.json('Votre article existe deja.');
         }
     }
+    
     
 
 })

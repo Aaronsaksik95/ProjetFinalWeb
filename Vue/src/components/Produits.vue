@@ -2,11 +2,16 @@
   <div class="produits" id="produits">
     <!-- <h1>{{output}}</h1> -->
     <div v-for="post in posts" :key="post.id" class="produit">
-      <router-link :to="{path: '/produit/'+ post.id}">{{post.name}}</router-link>
-      <img :src="post.image" width="100" height="50" alt />
-      <p>{{post.description}}</p>
-      <small>{{post.price}}</small>
-      <button v-on:click="addPanier(post.id)">Panier</button>
+      <div class="card" style="width: 18rem;">
+        <img src="../assets/logo.png" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">
+            <router-link :to="{path: '/produit/'+ post.id}">{{post.name}}</router-link>
+          </h5>
+          <p class="card-text">{{post.description}}</p>
+          <button class="btn btn-primary" v-on:click="addPanier(post.id)">Panier</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
