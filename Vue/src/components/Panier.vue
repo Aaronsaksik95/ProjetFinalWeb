@@ -1,12 +1,10 @@
 <template>
   <div class="panier" id="panier">
-    <h1>{{output}}</h1>
-    <div v-for="post in posts" :key="post.id" class="produit">
-      <router-link :to="{path: '/produit/'+ post.id}">{{post.name}}</router-link>
-      <img :src="post.image" width="100" height="50" alt />
-      <p>{{post.description}}</p>
-      <small>{{post.price}}</small>
-      <button v-on:click="addPanier(post.id)">Panier</button>
+    <div v-for="prod in prods" :key="prod.id" class="prod">
+      <p>{{prod.name}}</p>
+      <p>{{prod.description}}</p>
+      <p>{{prod.price}}</p>
+      <button v-on:click="Delete(prod.id)">Supprimer</button>
     </div>
   </div>
 </template>
@@ -14,39 +12,39 @@
 <script>
 import axios from "axios";
 export default {
-  name: "Produits",
-  el: "#produit",
+  name: "Panier",
+  el: "#panier",
   data: function() {
     return {
       posts: [],
       user: [],
+      prods: [],
       getToken: localStorage.getItem("token"),
-      output: []
+      output: [],
+      i: 0
     };
   },
-  mounted() {
-    axios
-      .get("http://localhost:5000/panier/")
+  async mounted() {
+    await axios
+      .get("http://localhost:5000/profile?secret_token=" + this.getToken)
+      .then(response => (this.user = response.data.user));
+    console.log(this.user.id);
+    await axios
+      .get("http://localhost:5000/panier/" + this.user.id)
       .then(response => (this.posts = response.data));
     console.log("posts", this.posts);
-    axios
-        .get("http://localhost:5000/profile?secret_token=" + this.getToken)
-        .then(response => (this.user = response.data.user));
+    while (this.i < this.posts.length) {
+      await axios
+        .get("http://localhost:5000/produit/" + this.posts[this.i].ProduitId)
+        .then(response => (this.prods.push(response.data)));
+      console.log("prod", this.prods);
+      this.i++
+    }
   },
   methods: {
-    addPanier(id) {
-      let currentObj = this;
-      this.axios
-        .post("http://localhost:5000/panier/", {
-          ProduitId: id,
-          UserId: this.user.id
-        })
-        .then(function(response) {
-          currentObj.output = response.data;
-        })
-        .catch(function(error) {
-          currentObj.output = error;
-        });
+    async Delete(id){
+      await axios
+      .delete("http://localhost:5000/panier/" + id)
     }
   }
 };
@@ -54,14 +52,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.produits {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+.panier {
+  
 }
-.produit {
+.prod {
+  display: flex;
+  justify-content:space-around;
   margin: 50px;
   padding: 10px;
-  border: solid 1px black;
+  border: solid 1px rgb(206, 206, 206);
 }
 </style>

@@ -30,15 +30,14 @@ export default {
       .then(response => (this.posts = response.data));
     console.log("posts", this.posts);
     axios
-        .get("http://localhost:5000/profile?secret_token=" + this.getToken)
-        .then(response => (this.user = response.data.user));
+      .get("http://localhost:5000/profile?secret_token=" + this.getToken)
+      .then(response => (this.user = response.data.user));
   },
   methods: {
     addPanier(id) {
       let currentObj = this;
       this.axios
-        .post("http://localhost:5000/panier/", {
-          ProduitId: id,
+        .post("http://localhost:5000/panier/" + id, {
           UserId: this.user.id
         })
         .then(function(response) {

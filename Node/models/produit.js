@@ -6,15 +6,18 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.INTEGER,
     image: DataTypes.STRING
   }, {});
-  Produit.associate = function(models) {
+  Produit.associate = function (models) {
     Produit.hasMany(models.Commentaire, {
-      onDelete: "cascade"
+      onDelete: "cascade", 
+      hooks: true
     });
     Produit.hasMany(models.Note, {
-      onDelete: "cascade"
+      onDelete: "cascade",
+      hooks: true
     });
     Produit.hasMany(models.Panier, {
-      onDelete: "cascade"
+      onDelete: "cascade", 
+      hooks: true
     });
   };
   return Produit;

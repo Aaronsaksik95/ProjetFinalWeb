@@ -70,7 +70,7 @@ router.put('/:id', async function (req, res) {
 router.delete('/:id', async function (req, res) {
     await produit.destroy({
         where: {
-            id: req.param('id')
+            id: req.params.id
           }
     })
     res.json('Votre article a bien été supprimé.');

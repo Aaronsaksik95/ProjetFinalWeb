@@ -7,6 +7,10 @@ import Login from "../components/authentification/Login.vue";
 import Profil from "../components/authentification/Profil.vue";
 import Produits from "../components/Produits.vue";
 import Produit from "../components/Produit.vue";
+import Panier from "../components/Panier.vue";
+import ProduitAdmin from "../components/admin/ProduitAdmin.vue";
+import AddProduit from "../components/admin/AddProduit.vue";
+import Users from "../components/admin/Users.vue";
 
 Vue.use(VueRouter);
 
@@ -32,6 +36,11 @@ const routes = [
     component: Produit
   },
   {
+    path: "/panier",
+    name: "panier",
+    component: Panier
+  },
+  {
     path: "/signup",
     name: "signup",
     component: Signup
@@ -45,6 +54,21 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: Profil
+  },
+  {
+    path: "/produitAdmin",
+    name: "produitAdmin",
+    component: ProduitAdmin
+  },
+  {
+    path: "/addProduit",
+    name: "addProduit",
+    component: AddProduit
+  },
+  {
+    path: "/users",
+    name: "users",
+    component: Users
   }
 ];
 

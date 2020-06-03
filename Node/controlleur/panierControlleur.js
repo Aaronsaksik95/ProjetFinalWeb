@@ -6,8 +6,8 @@ const userModel = require('../models').User;
 const session = require('express-session')
 
 
-router.get('/', async function(req, res){
-    await panier.findAll({ where: { UserId: req.user.id } })
+router.get('/:UserId', async function(req, res){
+    await panier.findAll({ where: { UserId: req.params.UserId } })
         .then(panier => {
             res.status(200).json(panier)
         })
@@ -16,17 +16,6 @@ router.get('/', async function(req, res){
         })
 })
 
-router.post('/', async function(req, res){
-    console.log(req.params.id)
-    await panier.create({
-        ProduitId: req.body.ProduitId,
-        UserId: req.body.UserId
-    }).then(Response => {
-        res.status(200).json(Response)
-    }).catch(error => {
-        res.status(500).json(error)
-    })
-})
 router.post('/:id', async function(req, res){
     console.log(req.params.id)
     await panier.create({
@@ -37,6 +26,17 @@ router.post('/:id', async function(req, res){
     }).catch(error => {
         res.status(500).json(error)
     })
+
+router.delete('/:id', async function (req, res) {
+    console.log('coucoucoucoucoucou')
+    await panier.destroy({
+        where: {
+            ProduitId: req.params.id
+          }
+    })
+    console.log('coucoucoucoucoucou')
+    res.json('Votre article a bien été supprimé du panier.');
+})
 })
 
 
