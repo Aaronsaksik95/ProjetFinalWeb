@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 // import Sign from "../views/Sign.vue";
 import Signup from "../components/authentification/Signup.vue";
 import Login from "../components/authentification/Login.vue";
+import Logout from "../components/authentification/Logout.vue";
 import Profil from "../components/authentification/Profil.vue";
 import Produits from "../components/Produits.vue";
 import Produit from "../components/Produit.vue";
@@ -41,6 +42,11 @@ const routes = [
     path: "/login",
     name: "login",
     component: Login
+  },
+  {
+    path: "/logout",
+    name: "logout",
+    component: Logout
   },
   {
     path: "/profile/:id",

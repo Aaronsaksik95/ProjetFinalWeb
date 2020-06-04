@@ -1,5 +1,5 @@
 <template>
-  <div class="w-25 mx-auto">
+  <div class="w-25 mx-auto ">
     <form>
       <div class="form-group">
         <label>Prénom</label>
@@ -26,8 +26,11 @@
           placeholder="exemple@gmail.com"
         />
       </div>
-      <button type="submit" v-on:click="updateProd()" class="btn btn-primary">Modifier</button>
+      <button type="submit" v-on:click="updateProf()" class="btn btn-primary">Modifier</button>
     </form>
+    <div class="mt-5">
+      <button class="btn btn-danger" v-on:click="deleteProf()">Supprimer mon profil.</button>
+    </div>
   </div>
 </template>
 
@@ -51,7 +54,7 @@ export default {
     //   .then(response => (this.user = response.data.user));
   },
   methods: {
-    async updateProd() {
+    async updateProf() {
       await axios.put("http://localhost:5000/user/" + this.$route.params.id, {
         firstName: this.theUser.firstName,
         lastName: this.theUser.lastName,
@@ -59,6 +62,10 @@ export default {
         sold: this.theUser.sold,
         email: this.theUser.email
       });
+    },
+    async deleteProf(){
+      await axios.delete("http://localhost:5000/user/" + this.$route.params.id);
+      window.location.href = '/signup'
     }
   }
 };

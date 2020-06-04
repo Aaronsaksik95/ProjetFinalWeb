@@ -13,6 +13,16 @@ router.get('/:UserId', async function (req, res) {
         })
 })
 
+router.get('/count/:id', function (req, res) {
+    panier.count({ where: { UserId: req.params.id } })
+        .then(count => {
+            res.status(200).json(count)
+        })
+        .catch(err => {
+            res.send('error: ' + err)
+        })
+})
+
 router.post('/:id', async function (req, res) {
     const samePanier = await panier.findOne({ where: { ProduitId: req.params.id, UserId: req.body.UserId } });
     if (samePanier === null) {

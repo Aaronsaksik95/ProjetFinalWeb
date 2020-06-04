@@ -1,15 +1,7 @@
 <template>
   <div class="w-50 mx-auto" id="panier">
-    <!-- <div v-for="prod in prods" :key="prod.id" class="media m-5 h-25">
-      <img src="../assets/logo.png" class="img" alt="..." />
-      <div class="media-body">
-        <h5 class="mt-0">{{prod.name}}</h5>{{prod.description}}
-        <small>{{prod.price}}</small>
-      </div>
-      
-    </div> -->
     <table class="table table-striped ">
-      <thead class="thead-dark">
+      <thead class="thead-light">
         <tr>
           <th scope="col">Aperçu</th>
           <th scope="col">Name</th>
@@ -28,12 +20,12 @@
             <Button v-on:click="Delete(prod.id)" class="btn btn-danger">Supprimer</Button>
           </td>
         </tr>
-        <tr class="bg-info">
+        <tr class="bg-light">
           <th scope="col">Récapitulatif</th>
-          <th scope="col">Nombre de Jeux : 2</th>
-          <th scope="col">Prix Total : 120 €</th>
+          <th scope="col">Nombre de Jeux : {{count}}</th>
+          <th scope="col">Prix Total : {{sumPrice}} €</th>
           <th scope="col"></th>
-          <th scope="col"><Button class="btn btn-light">Commander</Button></th>
+          <th scope="col"><Button class="btn btn-info">Commander</Button></th>
         </tr>
       </tbody>
     </table>
@@ -52,7 +44,9 @@ export default {
       prods: [],
       getToken: localStorage.getItem("token"),
       output: [],
-      i: 0
+      i: 0,
+      count: "",
+      sumPrice: 0
     };
   },
   async mounted() {
@@ -68,8 +62,15 @@ export default {
       await axios
         .get("http://localhost:5000/produit/" + this.posts[this.i].ProduitId)
         .then(response => this.prods.push(response.data));
-      console.log("prod", this.prods);
+      console.log("prods", this.prods);
       this.i++;
+    }
+    await axios
+      .get("http://localhost:5000/panier/count/" + this.user.id)
+      .then(response => (this.count = response.data));
+    for (var prod in this.prods){
+      this.sumPrice = this.sumPrice + prod.price
+      console.log(this.prod)
     }
   },
   methods: {
