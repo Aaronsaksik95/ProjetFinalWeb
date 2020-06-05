@@ -14,9 +14,9 @@ router.get('/commentaire', function (req, res) {
 })
 
 router.get('/:idPro/commentaire', async function (req, res) {
-    const oneCommentaire = await commentaire.findOne({ where: { ProduitId: req.param('idPro') } })
-        .then(oneCommentaire => {
-            res.status(200).json(oneCommentaire)
+    const commentairePro = await commentaire.findAll({ where: { ProduitId: req.params.idPro } })
+        .then(commentairePro => {
+            res.status(200).json(commentairePro)
         })
         .catch(err => {
             res.send(err)
@@ -28,7 +28,8 @@ router.post('/:idPro/commentaire', async function (req, res) {
         commentaire.create({
             content:req.body.content,
             date: Date(),
-            ProduitId:req.param('idPro'),
+            userName: req.body.userName,
+            ProduitId:req.params.idPro,
             UserId:req.body.UserId
         })
     }
@@ -49,9 +50,26 @@ router.put('/commentaire/:id', async function (req, res) {
 router.delete('/commentaire/:id', async function (req, res) {
     await commentaire.destroy({
         where: {
-            id: req.param('id')
+            id: req.params.id
         }
     })
 })
+
+router.delete('/commentaire/user/:UserId', async function (req, res) {
+    await commentaire.destroy({
+        where: {
+            UserId: req.params.UserId
+        }
+    })
+})
+
+router.delete('/commentaire/produit/:ProduitId', async function (req, res) {
+    await commentaire.destroy({
+        where: {
+            ProduitId: req.params.ProduitId
+        }
+    })
+})
+
 
 module.exports = router;

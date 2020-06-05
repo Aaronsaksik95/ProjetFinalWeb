@@ -67,9 +67,11 @@ export default {
       .then(response => (this.user = response.data.user));
   },
   methods: {
-    DeleteUser(id) {
+    async DeleteUser(id) {
+      axios.delete("http://localhost:5000/produit/commentaire/user/" + id)
+      axios.delete("http://localhost:5000/produit/note/user/" + id)
+      axios.delete("http://localhost:5000/panier/user/" + id)
       axios.delete("http://localhost:5000/user/" + id);
-      console.log("salut");
       document.location.reload(true);
     }
   }

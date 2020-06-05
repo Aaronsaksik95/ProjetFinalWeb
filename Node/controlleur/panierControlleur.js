@@ -41,5 +41,26 @@ router.post('/:id', async function (req, res) {
 
 })
 
+router.delete('/user/:UserId', async function (req, res) {
+    const user = panier.findOne({ where: { UserId: req.params.UserId } })
+    if (user) {
+        panier.destroy({
+            where: {
+                UserId: req.params.UserId
+            }
+        })
+    }
+})
+router.delete('/produit/:ProduitId', async function (req, res) {
+    const produit = panier.findOne({ where: { ProduitId: req.params.ProduitId } })
+    if (produit) {
+        panier.destroy({
+            where: {
+                ProduitId: req.params.ProduitId
+            }
+        })
+    }
+})
+
 
 module.exports = router;

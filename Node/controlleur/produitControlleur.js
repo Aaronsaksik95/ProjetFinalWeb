@@ -23,6 +23,16 @@ router.get('/:id', async function (req, res) {
         })
 })
 
+router.get('/name/:name', async function (req, res) {
+    const oneProduit = await produit.findOne({ where: { name: req.params.name } })
+        .then(oneProduit => {
+            res.status(200).json(oneProduit)
+        })
+        .catch(err => {
+            res.send(err)
+        })
+})
+
 router.post('/', async function (req, res) {
     const sameProduit = await produit.findOne({ where: { name: req.body.name } });
     if (req.body.name, req.body.description, req.body.price, req.body.image) {

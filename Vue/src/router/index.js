@@ -14,6 +14,7 @@ import AddProduit from "../components/admin/AddProduit.vue";
 import UpdateProduit from "../components/admin/UpdateProduit.vue";
 import UpdateUser from "../components/admin/UpdateUser.vue";
 import Users from "../components/admin/Users.vue";
+import Erreur404 from "../components/404.vue"
 
 Vue.use(VueRouter);
 
@@ -24,7 +25,7 @@ const routes = [
     component: Produits
   },
   {
-    path: "/produit/:id",
+    path: "/produit/:name",
     name: "produit",
     component: Produit
   },
@@ -77,6 +78,15 @@ const routes = [
     path: "/updateUser/:id",
     name: "updateUser",
     component: UpdateUser
+  },
+  {
+    path: "/NotFound",
+    name: "NotFound",
+    component: Erreur404
+  },
+  {
+    path: '*',
+    redirect: '/NotFound'
   }
 ];
 

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const note = require('../models').Note;
 
-router.get('/note', function(req, res){
+router.get('/note', function (req, res) {
     note.findAll()
         .then(note => {
             console.log(note)
@@ -14,7 +14,7 @@ router.get('/note', function(req, res){
 })
 
 router.get('/:idPro/note', async function (req, res) {
-    const oneCommentaire = await note.findOne({ where: { ProduitId: req.param('idPro') } })
+    const oneCommentaire = await note.findOne({ where: { ProduitId: req.params.idPro, UserId: req.body.UserId } })
         .then(oneCommentaire => {
             res.status(200).json(oneCommentaire)
         })
@@ -24,12 +24,11 @@ router.get('/:idPro/note', async function (req, res) {
 })
 
 router.post('/:idPro/note', async function (req, res) {
-    if (req.body.content) {
+    const myNote = await note.findOne({ where: { ProduitId: req.params.idPro, UserId: req.body.UserId } })
+    if (myNote === null) {
         note.create({
-            content:req.body.content,
-            date: Date(),
-            ProduitId:req.param('idPro'),
-            UserId:req.body.UserId
+            ProduitId: req.params.idPro,
+            UserId: req.body.UserId
         })
     }
 })
@@ -37,21 +36,51 @@ router.post('/:idPro/note', async function (req, res) {
 router.put('/note/:id', async function (req, res) {
     if (req.body.content) {
         note.update({
-            content:req.body.content
+            content: req.body.content
         }, {
             where: {
-                id: req.param('id')
+                id: req.params.id
             }
         })
     }
 })
+router.get('/note/count/:id', function (req, res) {
+    note.count({ where: { ProduitId: req.params.id } })
+        .then(count => {
+            res.status(200).json(count)
+        })
+        .catch(err => {
+            res.send('error: ' + err)
+        })
+})
 
-router.delete('/note/:id', async function (req, res) {
-    await note.destroy({
+router.delete('/:idPro/:idUser/note', async function (req, res) {
+    note.destroy({
         where: {
-            id: req.param('id')
+            ProduitId: req.params.idPro,
+            UserId: req.params.idUser
         }
     })
+})
+router.delete('/note/user/:UserId', async function (req, res) {
+    const user = note.findOne({ where: { UserId: req.params.UserId } })
+    if (user) {
+        note.destroy({
+            where: {
+                UserId: req.params.UserId
+            }
+        })
+    }
+})
+router.delete('/note/produit/:ProduitId', async function (req, res) {
+    const produit = note.findOne({ where: { ProduitId: req.params.ProduitId } })
+    if (produit) {
+        note.destroy({
+            where: {
+                ProduitId: req.params.ProduitId
+            }
+        })
+    }
 })
 
 module.exports = router;

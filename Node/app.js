@@ -91,6 +91,10 @@ app.use('/produit', commentaire)
 app.use('/produit', note)
 // passport.authenticate('local', { session: false }),
 
+app.get('*', function(req, res){
+    return res.json('Erreur 404.');
+  });
+
 db.sequelize.sync().then(() => {
     app.listen(port, function () {
         console.log('Server started on port ' + port)

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-25 mx-auto" >
+  <div class="w-25 mx-auto">
     <div v-if="this.user.RoleId == 2">
       <form>
         <div class="form-group">
@@ -35,6 +35,7 @@
 
 <script>
 import axios from "axios";
+// const moveFile = require("move-file");
 export default {
   name: "Produits",
   el: "#produits",
@@ -56,17 +57,18 @@ export default {
   },
   methods: {
     onFileSelected(event) {
-      this.file = event.target.files[0];
+      this.file = event.target.files;
+      console.log(this.file);
     },
-    submitFile() {
-      let formData = new FormData();
-      formData.append("file", this.file);
+    async submitFile() {
+      // await moveFile("/imageVuejs/Captured’écran.png", "/Desktop/B2/grosProjet/Web/ProjetFinalWeb/Vue/src/assets/Captured’écran.pn");
+      // console.log("The file has been moved");
       axios
         .post("http://localhost:5000/produit/", {
           name: this.name,
           description: this.desc,
           price: this.price,
-          image: "image"
+          image: this.file[0].name
         })
         .then(function() {
           console.log("SUCCESS!!");

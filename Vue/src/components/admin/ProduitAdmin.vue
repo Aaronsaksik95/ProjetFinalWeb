@@ -61,8 +61,10 @@ export default {
   },
   methods: {
     DeleteProd(id) {
+      axios.delete("http://localhost:5000/produit/commentaire/produit/" + id)
+      axios.delete("http://localhost:5000/produit/note/produit/" + id)
+      axios.delete("http://localhost:5000/panier/produit/" + id)
       axios.delete("http://localhost:5000/produit/" + id);
-      console.log("salut");
       document.location.reload(true);
     }
   }
