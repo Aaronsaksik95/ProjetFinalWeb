@@ -1,4 +1,5 @@
 var express = require('express');
+const upload = require('express-fileupload')
 var morgan = require('morgan');
 var userModel = require('./models').User;
 var panierModel = require('./models').Panier
@@ -9,6 +10,7 @@ var user = require('./controlleur/userControlleur');
 var produit = require('./controlleur/produitControlleur');
 var panier = require('./controlleur/panierControlleur');
 var note = require('./controlleur/noteControlleur');
+var commande = require('./controlleur/commandeControlleur');
 var secureRoute = require('./controlleur/secureControlleur')
 var commentaire = require('./controlleur/commentaireControlleur');
 const jwt = require('jsonwebtoken');
@@ -20,6 +22,7 @@ var port = 5000
 require('./authentification/passport_config');
 
 var app = express()
+app.use(upload())
 app.use(cors())
 
 app.use(morgan('dev'))
@@ -64,7 +67,7 @@ app.post('/login', async (req, res, next) => {
                 const body = { id: user.id, RoleId: user.RoleId };
                 const token = jwt.sign({ user: body }, 'top_secret');
                 const info = "Vous êtes bien connecté."
-                return res.json([{ token }, {info}]);
+                return res.json([{ token }, { info }]);
             });
         } catch (error) {
             return next(error);
@@ -78,22 +81,21 @@ app.delete('/panier/:ProduitId', function (req, res) {
             ProduitId: req.params.ProduitId
         }
     })
-    console.log('coucoucoucoucoucou')
     res.json('Votre article a bien été supprimé du panier.');
 })
 
-// app.use('/api', auth)
 app.use('/user', user)
 app.use('/profile', passport.authenticate('jwt', { session: false }), secureRoute);
 app.use('/produit', produit)
 app.use('/panier', panier)
 app.use('/produit', commentaire)
 app.use('/produit', note)
+app.use('/commande', commande)
 // passport.authenticate('local', { session: false }),
 
-app.get('*', function(req, res){
+app.get('*', function (req, res) {
     return res.json('Erreur 404.');
-  });
+});
 
 db.sequelize.sync().then(() => {
     app.listen(port, function () {

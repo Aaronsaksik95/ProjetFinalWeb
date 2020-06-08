@@ -31,7 +31,7 @@
         <button type="submit" class="btn btn-info h-25">Inscription</button>
         <router-link class="link p-2" to="/login">Connexion</router-link>
       </form>
-      <p class="text-primary">{{output}}</p>
+      <h6 class="text-info mt-4">{{output}}</h6>
     </div>
   </div>
 </template>
@@ -70,7 +70,6 @@ export default {
         .catch(function(error) {
           currentObj.output = error;
         });
-      window.location.href = "/login";
     }
   }
 };

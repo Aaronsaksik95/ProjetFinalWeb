@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    image: DataTypes.STRING
+    image: DataTypes.TEXT
   }, {});
   Produit.associate = function (models) {
     Produit.hasMany(models.Commentaire, {
@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       hooks: true
     });
     Produit.hasMany(models.Panier, {
+      onDelete: "cascade", 
+      hooks: true
+    });
+    Produit.hasMany(models.Commande, {
       onDelete: "cascade", 
       hooks: true
     });

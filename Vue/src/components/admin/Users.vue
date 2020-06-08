@@ -1,7 +1,9 @@
 <template>
   <div class="m-5">
+    <h2 class="text-info">Liste des utilisateurs</h2>
     <div v-if="this.user.RoleId == 2">
       <router-link class="float-left mb-3 ml-3" to="/produitAdmin">Liste des jeux</router-link>
+      <router-link class="float-left mb-3 ml-3" to="/commandeAdmin">Liste des ventes</router-link>
       <table class="table table-striped">
         <thead class="thead-dark">
           <tr>
@@ -71,6 +73,7 @@ export default {
       axios.delete("http://localhost:5000/produit/commentaire/user/" + id)
       axios.delete("http://localhost:5000/produit/note/user/" + id)
       axios.delete("http://localhost:5000/panier/user/" + id)
+      axios.delete("http://localhost:5000/commande/user/" + id)
       axios.delete("http://localhost:5000/user/" + id);
       document.location.reload(true);
     }

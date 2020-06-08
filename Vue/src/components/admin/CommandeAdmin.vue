@@ -1,35 +1,26 @@
 <template>
   <div class="m-5">
-    <h2 class="text-info">Liste des jeux</h2>
+    <h2 class="text-info">Liste des ventes</h2>
     <div v-if="this.user.RoleId == 2">
-      <router-link class="float-left mb-3 ml-3" to="/addProduit">Ajouter un jeu</router-link>
+      <router-link class="float-left mb-3 ml-3" to="/addProduit">Liste des Jeux</router-link>
       <router-link class="float-left mb-3 ml-3" to="/users">Liste des users</router-link>
-      <router-link class="float-left mb-3 ml-3" to="/commandeAdmin">Liste des ventes</router-link>
       <table class="table table-striped">
         <thead class="thead-dark">
           <tr>
             <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Image</th>
-            <th scope="col">Description</th>
-            <th scope="col">Price</th>
-            <th scope="col">Suppimer</th>
-            <th scope="col">Modifier</th>
+            <th scope="col">Creation</th>
+            <th scope="col">Modification</th>
+            <th scope="col">UserId</th>
+            <th scope="col">ProduitId</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="post in posts" :key="post.id">
             <th scope="row">{{post.id}}</th>
-            <td>{{post.name}}</td>
-            <td>{{post.image.substr(0, 30)}}</td>
-            <td>{{post.description.substr(0, 30)}}</td>
-            <td>{{post.price}}</td>
-            <td>
-              <Button v-on:click="DeleteProd(post.id)" class="btn btn-danger">Supprimer</Button>
-            </td>
-            <td>
-              <router-link class="btn btn-warning" :to="{path: '/updateProduit/'+ post.id}">Modifier</router-link>
-            </td>
+            <td>{{post.createdAt}}</td>
+            <td>{{post.updatedAt}}</td>
+            <td>{{post.UserId}}</td>
+            <td>{{post.ProduitId}}</td>
           </tr>
         </tbody>
       </table>
@@ -55,7 +46,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:5000/produit/")
+      .get("http://localhost:5000/commande/")
       .then(response => (this.posts = response.data));
     axios
       .get("http://localhost:5000/profile?secret_token=" + this.getToken)
@@ -63,9 +54,9 @@ export default {
   },
   methods: {
     DeleteProd(id) {
-      axios.delete("http://localhost:5000/produit/commentaire/produit/" + id)
-      axios.delete("http://localhost:5000/produit/note/produit/" + id)
-      axios.delete("http://localhost:5000/panier/produit/" + id)
+      axios.delete("http://localhost:5000/produit/commentaire/produit/" + id);
+      axios.delete("http://localhost:5000/produit/note/produit/" + id);
+      axios.delete("http://localhost:5000/panier/produit/" + id);
       axios.delete("http://localhost:5000/produit/" + id);
       document.location.reload(true);
     }

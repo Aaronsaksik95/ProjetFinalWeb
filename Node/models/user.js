@@ -26,6 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Panier, {
       onDelete: "cascade"
     });
+    User.hasMany(models.Commande, {
+      onDelete: "cascade"
+    });
   };
 
   return User;

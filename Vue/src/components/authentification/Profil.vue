@@ -52,9 +52,9 @@ export default {
     axios
       .get("http://localhost:5000/user/" + this.$route.params.id)
       .then(response => (this.theUser = response.data));
-    // axios
-    //   .get("http://localhost:5000/profile?secret_token=" + this.getToken)
-    //   .then(response => (this.user = response.data.user));
+    axios
+      .get("http://localhost:5000/profile?secret_token=" + this.getToken)
+      .then(response => (this.user = response.data.user));
   },
   methods: {
     async updateProf() {
@@ -67,8 +67,7 @@ export default {
       });
     },
     async deleteProf() {
-      await axios.delete("http://localhost:5000/user/" + this.$route.params.id);
-      window.location.href = "/signup";
+      window.location.href = "/deleteProf/" + this.theUser.id;
     }
   }
 };

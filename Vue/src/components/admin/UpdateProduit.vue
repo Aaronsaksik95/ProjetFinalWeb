@@ -3,7 +3,8 @@
     <div v-if="this.user.RoleId == 2">
       <form>
         <div class="form-group">
-          <input type="file" ref="file" class="form-control-file" />
+          <label for="exampleInputEmail1">Image</label>
+          <input type="text" v-model="post.image" class="form-control" />
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Nom</label>
@@ -54,9 +55,8 @@ export default {
           name: this.post.name,
           description: this.post.description,
           price: this.post.price,
-          image: "image"
-        }
-      );
+          image: this.post.image
+        });
       window.location.href = '/produitAdmin'
     }
   }

@@ -16,7 +16,7 @@
         <button type="submit" class="btn btn-info h-25">Connexion</button>
         <router-link class="link p-2" to="/signup">Inscription</router-link>
       </form>
-      <p class="text-info">{{info}}</p>
+      <h6 class="text-info mt-4">{{info}}</h6>
     </div>
   </div>
 </template>
@@ -32,6 +32,7 @@ export default {
       password: "",
       token: "",
       info: "",
+      theUser: [],
       user: [],
       getToken: localStorage.getItem("token")
     };
@@ -58,8 +59,7 @@ export default {
         })
         .then(function(response) {
           (currentObj.token = response.data[0].token),
-            (currentObj.info = response.data[1].info),
-            console.log(currentObj);
+            (currentObj.info = response.data[1].info);
         })
         .catch(function(error) {
           currentObj.token = error;
@@ -67,7 +67,8 @@ export default {
       axios
         .get("http://localhost:5000/profile?secret_token=" + this.getToken)
         .then(response => (this.user = response.data.user));
-      window.location.href = "/";
+
+      document.location.reload(true);
     }
   }
 };

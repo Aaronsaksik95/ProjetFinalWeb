@@ -7,16 +7,17 @@
         :key="post.id"
         class="card m-5 p-0 col-3 shadow mb-5 rounded"
       >
-        <img src="../assets/fortnite.jpg" class="card-img-top" alt="..." />
+        <router-link :to="{path: '/produit/' + post.name}">
+          <img :src="post.image" class="card-img-top" alt="..." />
+        </router-link>
+
         <div class="card-body">
           <h5 class="card-title">
             <router-link :to="{path: '/produit/' + post.name}">{{post.name}}</router-link>
           </h5>
-
           <p class="card-text">{{post.description}}</p>
 
           <h4 class="float-left mt-5">{{post.price}} €</h4>
-          <h5 class="text-danger">{{like}} J'aimes</h5>
           <button class="btn btn-dark float-right mt-4" v-on:click="addPanier(post.id)">Panier</button>
         </div>
       </div>
@@ -34,11 +35,13 @@ export default {
       posts: [],
       user: [],
       like: [],
+      image: [],
       getToken: localStorage.getItem("token"),
       output: []
     };
   },
   mounted() {
+
     axios
       .get("http://localhost:5000/produit/")
       .then(response => (this.posts = response.data));
@@ -46,7 +49,7 @@ export default {
       .get("http://localhost:5000/profile?secret_token=" + this.getToken)
       .then(response => (this.user = response.data.user));
   },
-  
+
   methods: {
     addPanier(id) {
       let currentObj = this;
@@ -62,15 +65,14 @@ export default {
         });
       document.location.reload(true);
     },
-  //   async Like(id) {
-  //   await axios
-  //     .get("http://localhost:5000/produit/note/count/" + id)
-  //     .then(response => (this.like = response.data));
-  // }
+    Image(id) {
+      this.axios
+        .get("http://localhost:5000/produit/image/" + id)
+        .then(response => (this.image = response.data));
+    }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

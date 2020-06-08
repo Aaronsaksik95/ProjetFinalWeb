@@ -1,23 +1,15 @@
 <template>
   <div class="w-25 mx-auto">
-    <h2 class="text-info">Ajouter un jeu</h2>
     <div v-if="this.user.RoleId == 2">
       <form>
         <div class="form-group">
-          <label for="exampleInputEmail1">Image</label>
-          <input type="text" v-model="image" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Nom</label>
-          <input type="text" v-model="name" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Description</label>
-          <textarea v-model="desc" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Prix</label>
-          <input type="number" v-model="price" class="form-control" />
+          <input
+            type="file"
+            name="file"
+            ref="file"
+            @change="onFileChange"
+            class="form-control-file"
+          />
         </div>
         <button type="submit" v-on:click="submitFile()" class="btn btn-primary">Ajouter</button>
       </form>
@@ -40,7 +32,6 @@ export default {
       name: "",
       desc: "",
       price: "",
-      image: "",
       user: [],
       getToken: localStorage.getItem("token"),
       output: [],
@@ -48,26 +39,34 @@ export default {
       prodAdd: []
     };
   },
-  async mounted() {
+  mounted() {
     axios
       .get("http://localhost:5000/profile?secret_token=" + this.getToken)
       .then(response => (this.user = response.data.user));
+    axios
+      .get("http://localhost:5000/produit/name/" + this.$route.params.name)
+      .then(response => (this.prodAdd = response.data));
   },
   methods: {
-    onFileChange(event) {
-      this.selectedFile = event.target.files;
-      console.log(this.selectedFile);
+    onFileChange(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.selectedFile = selectedFile;
     },
     async submitFile() {
       const formData = new FormData();
       formData.append("file", this.selectedFile);
 
-      await axios.post("http://localhost:5000/produit/", {
-        name: this.name,
-        description: this.desc,
-        price: this.price,
-        image: this.image
-      });
+      await axios
+        .post(
+          "http://localhost:5000/produit/image/" + this.prodAdd.id,
+          formData
+        )
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

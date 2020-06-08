@@ -42,7 +42,7 @@ router.post('/:id', async function (req, res) {
 })
 
 router.delete('/user/:UserId', async function (req, res) {
-    const user = panier.findOne({ where: { UserId: req.params.UserId } })
+    const user = panier.findAll({ where: { UserId: req.params.UserId } })
     if (user) {
         panier.destroy({
             where: {

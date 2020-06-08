@@ -13,10 +13,11 @@ router.get('/note', function (req, res) {
         })
 })
 
-router.get('/:idPro/note', async function (req, res) {
-    const oneCommentaire = await note.findOne({ where: { ProduitId: req.params.idPro, UserId: req.body.UserId } })
-        .then(oneCommentaire => {
-            res.status(200).json(oneCommentaire)
+router.get('/:idPro/:UserId/note', async function (req, res) {
+    await note.findOne({ where: { ProduitId: req.params.idPro, UserId: req.params.UserId } })
+        .then(oneNote => {
+            res.status(200).json(oneNote)
+            // console.log(oneNote)
         })
         .catch(err => {
             res.send(err)
@@ -33,17 +34,6 @@ router.post('/:idPro/note', async function (req, res) {
     }
 })
 
-router.put('/note/:id', async function (req, res) {
-    if (req.body.content) {
-        note.update({
-            content: req.body.content
-        }, {
-            where: {
-                id: req.params.id
-            }
-        })
-    }
-})
 router.get('/note/count/:id', function (req, res) {
     note.count({ where: { ProduitId: req.params.id } })
         .then(count => {

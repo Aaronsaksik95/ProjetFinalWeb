@@ -41,7 +41,7 @@ router.put('/commentaire/:id', async function (req, res) {
             content:req.body.content
         }, {
             where: {
-                id: req.param('id')
+                id: req.params.id
             }
         })
     }
