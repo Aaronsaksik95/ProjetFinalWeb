@@ -1,5 +1,4 @@
 var express = require('express');
-const upload = require('express-fileupload')
 var morgan = require('morgan');
 var userModel = require('./models').User;
 var panierModel = require('./models').Panier
@@ -91,7 +90,6 @@ app.use('/panier', panier)
 app.use('/produit', commentaire)
 app.use('/produit', note)
 app.use('/commande', commande)
-// passport.authenticate('local', { session: false }),
 
 app.get('*', function (req, res) {
     return res.json('Erreur 404.');
