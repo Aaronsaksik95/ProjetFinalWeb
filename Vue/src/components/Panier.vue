@@ -102,7 +102,7 @@ export default {
       document.location.reload(true);
     },
     Commander() {
-      var compte = this.theUser.sold - this.sumPrice;
+      
       var i = 0;
       while (i < this.posts.length) {
         this.axios.post(
@@ -113,10 +113,8 @@ export default {
         );
         i++;
       }
-      this.axios.put("http://localhost:5000/user/sold/" + this.theUser.id, {
-        sold: compte
-      });
-      this.axios.delete("http://localhost:5000/panier/user/" + this.theUser.id);
+      
+      
       window.location.href = "/commande";
     }
   }

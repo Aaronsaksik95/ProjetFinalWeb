@@ -134,7 +134,7 @@ export default {
       .get("http://localhost:5000/user/" + this.user.id)
       .then(response => (this.theUser = response.data));
     await axios
-      .get("http://localhost:5000/commande/" + this.user.id)
+      .get("http://localhost:5000/panier/" + this.user.id)
       .then(response => (this.posts = response.data));
     while (this.i < this.posts.length) {
       await axios
@@ -151,6 +151,7 @@ export default {
   },
   methods: {
     Commander() {
+      var compte = this.theUser.sold - this.sumPrice;
       html2canvas(document.querySelector("#facture"), {
         imageTimeout: 5000,
         useCORS: true
@@ -163,6 +164,10 @@ export default {
         pdf.save("FactureGame0rPlay.pdf");
         document.getElementById("pdf").innerHTML = "";
       });
+      this.axios.put("http://localhost:5000/user/sold/" + this.theUser.id, {
+        sold: compte
+      });
+      axios.delete("http://localhost:5000/panier/user/" + this.theUser.id);
       this.test = true;
     }
   }
