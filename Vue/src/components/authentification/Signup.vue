@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Signup",
   el: "#signup",
@@ -50,6 +51,16 @@ export default {
       password: "",
       output: ""
     };
+  },
+  mounted() {
+    axios.post("http://localhost:5000/roles", {
+      id: 1,
+      status: "user"
+    });
+    axios.post("http://localhost:5000/roles", {
+      id: 2,
+      status: "admin"
+    });
   },
   methods: {
     formSubmit(e) {

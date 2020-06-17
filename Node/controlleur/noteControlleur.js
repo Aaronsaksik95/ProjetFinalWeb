@@ -17,7 +17,6 @@ router.get('/:idPro/:UserId/note', async function (req, res) {
     await note.findOne({ where: { ProduitId: req.params.idPro, UserId: req.params.UserId } })
         .then(oneNote => {
             res.status(200).json(oneNote)
-            // console.log(oneNote)
         })
         .catch(err => {
             res.send(err)

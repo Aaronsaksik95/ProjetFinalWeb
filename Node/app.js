@@ -21,7 +21,6 @@ var port = 5000
 require('./authentification/passport_config');
 
 var app = express()
-app.use(upload())
 app.use(cors())
 
 app.use(morgan('dev'))
@@ -81,6 +80,21 @@ app.delete('/panier/:ProduitId', function (req, res) {
         }
     })
     res.json('Votre article a bien été supprimé du panier.');
+})
+app.post('/roles', async function (req, res) {
+    const sameRoles = await roles.findOne({ where: { status: "user", status: "admin"} });
+
+        if (sameRoles === null) {
+            roles.create({
+                id: req.body.id,
+                status: req.body.status
+            })
+            return res.json('Role bien créé.');
+        }
+        else {
+            return res.json('Role déjà créé');
+        }
+    
 })
 
 app.use('/user', user)
